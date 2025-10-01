@@ -45,7 +45,7 @@ export default function About() {
   }
 
   return (
-    <section className="pt-44 px-6 pb-20 bg-gradient-to-b from-[#fffdf9] via-[#faf5f0] to-[#f3ece6] text-amber-300 overflow-hidden">
+    <section className="min-h-screen pt-44 px-6 pb-20 bg-gradient-to-b from-[#fffdf9] via-[#faf5f0] to-[#f3ece6] text-amber-300 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-24">
         {groupedSections.map((group, index) => {
           // إذا كان group عبارة عن مجموعة من قسمين بدون صور
@@ -57,7 +57,7 @@ export default function About() {
                 data-aos="fade-up"
               >
                 {group.map((sec) => (
-                  <div key={sec._id}>
+                  <div key={sec.id}>
                     <h2 className="text-4xl font-bold text-amber-300 mb-4">
                       {i18n.language === "ar" ? sec.title_ar : sec.title_en}
                     </h2>
@@ -78,7 +78,7 @@ export default function About() {
 
           return (
             <div
-              key={sec._id}
+              key={sec.id}
               className={`flex gap-12 items-center max-md:flex-wrap ${
                 reverse ? "flex-row-reverse" : ""
               }`}

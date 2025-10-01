@@ -31,6 +31,7 @@ export default function AlbumCarousel({ images, initialIndex = 0, onClose }) {
             </button>
 
             {/* الـ Swiper الكبير */}
+            {/* الـ Swiper الكبير */}
             <Swiper
               onSwiper={(s) => {
                 setSwiper(s);
@@ -45,12 +46,19 @@ export default function AlbumCarousel({ images, initialIndex = 0, onClose }) {
               className="mb-4"
             >
               {images.map((img) => (
-                <SwiperSlide key={img._id}>
-                  <img
-                    src={`${import.meta.env.VITE_API_BASE_URL}${img.imageURL}`}
-                    alt={img.title_ar || img.title_en || ""}
-                    className="w-full h-auto object-contain rounded"
-                  />
+                <SwiperSlide key={img.id}>
+                  <div
+                    className="flex items-center justify-center"
+                    style={{ height: "70vh" }}
+                  >
+                    <img
+                      src={`${import.meta.env.VITE_API_BASE_URL}${
+                        img.imageURL
+                      }`}
+                      alt={img.title_ar || img.title_en || ""}
+                      className="max-w-full max-h-full object-contain rounded"
+                    />
+                  </div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -59,7 +67,7 @@ export default function AlbumCarousel({ images, initialIndex = 0, onClose }) {
             <div className="flex justify-center gap-2 overflow-x-auto pb-4">
               {images.map((img, idx) => (
                 <img
-                  key={img._id}
+                  key={img.id}
                   src={`${import.meta.env.VITE_API_BASE_URL}${img.imageURL}`}
                   alt={img.title_ar || img.title_en || ""}
                   className={`w-16 h-12 object-cover rounded cursor-pointer ${

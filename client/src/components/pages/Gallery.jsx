@@ -49,7 +49,7 @@ export default function Gallery() {
     fetchRoomTypes();
   }, []);
 
-  const selectedRoom = roomTypes.find((room) => room._id === category);
+  const selectedRoom = roomTypes.find((room) => room.id === category);
 
   const selectedRoomName =
     i18n.language === "ar" ? selectedRoom?.name_ar : selectedRoom?.name_en;
@@ -61,7 +61,7 @@ export default function Gallery() {
       const filtered = images.filter((img) => {
         const imgRoomTypeId =
           img.roomType && typeof img.roomType === "object"
-            ? img.roomType._id
+            ? img.roomType.id
             : img.roomType;
 
         return String(imgRoomTypeId) === String(category);
@@ -90,7 +90,7 @@ export default function Gallery() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {filteredImages.map((img, idx) => (
           <div
-            key={img._id}
+            key={img.id}
             className="relative group rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-300 cursor-pointer"
             onClick={() => {
               setSelectedIndex(idx);

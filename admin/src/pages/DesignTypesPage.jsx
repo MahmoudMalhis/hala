@@ -108,7 +108,7 @@ export default function DesignTypesPage() {
       name_en: type.name_en,
       imageURL: type.imageURL,
     });
-    setEditingId(type._id);
+    setEditingId(type.id);
     setUploaderKey((k) => k + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -129,7 +129,7 @@ export default function DesignTypesPage() {
       await axios.delete(
         `${import.meta.env.VITE_API_BASE_URL}/api/design-types/${id}`
       );
-      setDesignTypes((prev) => prev.filter((t) => t._id !== id));
+      setDesignTypes((prev) => prev.filter((t) => t.id !== id));
       Swal.fire("تم الحذف!", "تم حذف النوع بنجاح.", "success");
     } catch (err) {
       console.error("فشل في الحذف", err);
@@ -202,7 +202,7 @@ export default function DesignTypesPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {designTypes.map((type) => (
             <div
-              key={type._id}
+              key={type.id}
               className="bg-white p-4 rounded shadow flex flex-col items-center text-center capitalize"
             >
               <img
@@ -220,7 +220,7 @@ export default function DesignTypesPage() {
                   تعديل
                 </button>
                 <button
-                  onClick={() => handleDelete(type._id)}
+                  onClick={() => handleDelete(type.id)}
                   className="bg-red-500 text-white px-4 py-1 rounded cursor-pointer"
                 >
                   حذف

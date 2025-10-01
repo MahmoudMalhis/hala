@@ -48,9 +48,9 @@ export default function GallerySlider() {
       >
         {designTypes.map((type) => (
           <SwiperSlide
-            key={type._id}
+            key={type.id}
             className="rounded-xl overflow-hidden shadow-md bg-white cursor-pointer"
-            onClick={() => handleClick(type._id)}
+            onClick={() => handleClick(type.id)}
           >
             <img
               src={`${import.meta.env.VITE_API_BASE_URL}${type.imageURL}`}

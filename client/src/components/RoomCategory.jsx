@@ -64,8 +64,8 @@ export default function RoomCategory() {
           <div className="flex flex-wrap justify-center items-center gap-8 justify-items-center">
             {categories.map((cat) => (
               <div
-                key={cat._id}
-                onClick={() => handleClick(cat._id)}
+                key={cat.id}
+                onClick={() => handleClick(cat.id)}
                 className="cursor-pointer group flex flex-col items-center transition transform hover:scale-105"
               >
                 <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-3xl overflow-hidden shadow-lg">
@@ -73,9 +73,6 @@ export default function RoomCategory() {
                     src={`${import.meta.env.VITE_API_BASE_URL}${cat.imageURL}`}
                     alt={cat.name_en}
                     className="w-full h-full object-cover group-hover:opacity-80"
-                    onError={(e) => {
-                      e.target.src = "/default-room.jpg";
-                    }}
                   />
                 </div>
                 <span className="mt-3 text-lg text-gray-600 group-hover:underline font-alexandria">

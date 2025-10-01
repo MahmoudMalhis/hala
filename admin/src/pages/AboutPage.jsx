@@ -106,7 +106,7 @@ export default function AboutPage() {
       imageURL: section.imageURL || "",
       order: section.order || "",
     });
-    setEditingId(section._id);
+    setEditingId(section.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -245,7 +245,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sections.map((section) => (
             <div
-              key={section._id}
+              key={section.id}
               className="bg-white p-4 rounded shadow flex flex-col"
             >
               {section.imageURL ? (
@@ -274,7 +274,7 @@ export default function AboutPage() {
                   تعديل
                 </button>
                 <button
-                  onClick={() => handleDelete(section._id)}
+                  onClick={() => handleDelete(section.id)}
                   className="bg-red-500 text-white px-4 py-1 rounded cursor-pointer hover:bg-red-400"
                 >
                   حذف

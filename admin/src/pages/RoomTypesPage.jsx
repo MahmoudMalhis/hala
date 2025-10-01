@@ -82,7 +82,7 @@ export default function RoomTypesPage() {
       name_ar: room.name_ar,
       imageURL: room.imageURL,
     });
-    setEditingId(room._id);
+    setEditingId(room.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -182,7 +182,7 @@ export default function RoomTypesPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {roomTypes.map((room) => (
             <div
-              key={room._id}
+              key={room.id}
               className="bg-white p-4 rounded shadow flex flex-col items-center text-center capitalize"
             >
               <img
@@ -200,7 +200,7 @@ export default function RoomTypesPage() {
                   تعديل
                 </button>
                 <button
-                  onClick={() => handleDelete(room._id)}
+                  onClick={() => handleDelete(room.id)}
                   className="bg-red-500 text-white px-4 py-1 rounded cursor-pointer"
                 >
                   حذف

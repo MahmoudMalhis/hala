@@ -25,7 +25,7 @@ export default function HomeSettingsPage() {
         );
         if (res.data) {
           setSettings(res.data);
-          setSettingsId(res.data._id);
+          setSettingsId(res.data.id);
         }
       } catch (err) {
         console.error("خطأ في جلب الإعدادات:", err);
@@ -85,7 +85,7 @@ export default function HomeSettingsPage() {
           updatedSettings
         );
         setSettings(updatedSettings);
-        setSettingsId(res.data._id);
+        setSettingsId(res.data.id);
         setResetPreview(true);
         Swal.fire({
           position: "top-end",

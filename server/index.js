@@ -59,7 +59,7 @@ dotenv.config();
 
   // Server listen
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, "192.168.1.13", () => {
+  app.listen(PORT, "192.168.1.11", () => {
     console.log(`🚀 Server is running on port ${PORT}`);
   });
 })();

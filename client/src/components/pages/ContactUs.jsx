@@ -69,7 +69,7 @@ export default function ContactUs() {
           {contactInfo?.otherLinks.map((link) => {
             return (
               <a
-                key={link._id}
+                key={link.id}
                 href={link.url}
                 target="_blank"
                 className={`${sharedClasses} zoom-in hover:ring-2 mt-6 rounded-full`}
@@ -95,7 +95,7 @@ export default function ContactUs() {
         >
           <p className="text-white">{t("orVisitOffice")}</p>
           {contactInfo?.address.map((addr, id) => (
-            <p key={id} className="text-white font-semibold mt-1.5 capitalize">
+            <p key={id} className="text-white font-semibold mt-1.5 capitalize mp-3">
               {i18n.language === "ar" ? addr.ar : addr.en}
             </p>
           ))}

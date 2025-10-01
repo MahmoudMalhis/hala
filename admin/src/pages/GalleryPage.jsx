@@ -74,6 +74,13 @@ export default function GalleryPage() {
     e.preventDefault();
     // تحقق من كل الحقول المطلوبة
     const { roomType, designType, imageURL, album } = form;
+    if (!editingId && !form.imageURL) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "الرجاء رفع صورة",
+      });
+    }
     if (!roomType || !designType || !imageURL || !album) {
       return Swal.fire({
         icon: "error",
@@ -101,6 +108,7 @@ export default function GalleryPage() {
         title_ar: "",
         description_en: "",
         description_ar: "",
+        imageURL: "",
         roomType: "",
         designType: "",
         album: "",
@@ -129,14 +137,14 @@ export default function GalleryPage() {
       description_en: img.description_en || "",
       description_ar: img.description_ar || "",
       imageURL: img.imageURL || "",
-      roomType: img.roomType?._id || "",
+      roomType: img.roomType?.id || "",
       designType:
         typeof img.designType === "object"
-          ? img.designType._id
+          ? img.designType.id
           : img.designType || "",
       album: img.album || "",
     });
-    setEditingId(img._id);
+    setEditingId(img.id);
     setResetPreview(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -209,10 +217,10 @@ export default function GalleryPage() {
   // تصفية الصور بناءً على نوع الغرفة ونوع التصميم
   const filteredImages = images.filter((img) => {
     const matchesRoomType = selectedRoomType
-      ? img.roomType?._id === selectedRoomType
+      ? img.roomType?.id === selectedRoomType
       : true;
     const matchesDesignType = selectedDesignType
-      ? img.designType?._id === selectedDesignType
+      ? img.designType?.id === selectedDesignType
       : true;
 
     return matchesRoomType && matchesDesignType;
@@ -243,7 +251,7 @@ export default function GalleryPage() {
             >
               <option value="">كل الأنواع</option>
               {roomTypes.map((r) => (
-                <option key={r._id} value={r._id}>
+                <option key={r.id} value={r.id}>
                   {r.name_ar}
                 </option>
               ))}
@@ -259,7 +267,7 @@ export default function GalleryPage() {
             >
               <option value="">اختر نوع التصميم</option>
               {designTypes.map((dt) => (
-                <option key={dt._id} value={dt._id}>
+                <option key={dt.id} value={dt.id}>
                   {dt.name_ar}
                 </option>
               ))}
@@ -281,7 +289,7 @@ export default function GalleryPage() {
             >
               <option value="">اختر نوع التصميم</option>
               {designTypes.map((dt) => (
-                <option key={dt._id} value={dt._id}>
+                <option key={dt.id} value={dt.id}>
                   {dt.name_ar}
                 </option>
               ))}
@@ -299,7 +307,7 @@ export default function GalleryPage() {
             >
               <option value="">اختر نوع الغرفة</option>
               {roomTypes.map((r) => (
-                <option key={r._id} value={r._id}>
+                <option key={r.id} value={r.id}>
                   {r.name_ar}
                 </option>
               ))}
@@ -381,7 +389,7 @@ export default function GalleryPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {imagesByAlbum[album].map((img) => (
                   <div
-                    key={img._id}
+                    key={img.id}
                     className="bg-white rounded shadow overflow-hidden flex flex-col"
                   >
                     <img
@@ -394,12 +402,12 @@ export default function GalleryPage() {
                     <div className="p-3 text-sm flex justify-between items-center">
                       <span>
                         {img.roomType?.name_ar ||
-                          roomTypes.find((r) => r._id === img.roomType)
+                          roomTypes.find((r) => r.id === img.roomType)
                             ?.name_ar ||
                           "غير معروف"}{" "}
                         -{" "}
                         {img.designType?.name_ar ||
-                          designTypes.find((r) => r._id === img.designType)
+                          designTypes.find((r) => r.id === img.designType)
                             ?.name_ar ||
                           "غير معروف"}
                       </span>
@@ -411,7 +419,7 @@ export default function GalleryPage() {
                           تعديل
                         </button>
                         <button
-                          onClick={() => handleDelete(img._id)}
+                          onClick={() => handleDelete(img.id)}
                           className="text-red-500 hover:text-red-700 cursor-pointer"
                         >
                           حذف

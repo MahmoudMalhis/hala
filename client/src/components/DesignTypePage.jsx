@@ -23,13 +23,22 @@ export default function DesignTypePage() {
           `${import.meta.env.VITE_API_BASE_URL}/api/gallery`
         );
         const filtered = allImages.filter((img) => {
-          // نتأكد إن designType موجود قبل محاولة القراءة
-          const dt = img.designType
-            ? typeof img.designType === "string"
-              ? img.designType
-              : img.designType._id
-            : null;
-          return dt === id;
+          // التحقق من وجود designType
+          if (!img.designType) return false;
+
+          // معالجة designType بناءً على نوعه
+          let designTypeId;
+
+          if (typeof img.designType === "object") {
+            // إذا كان designType كائن، استخدم id (وليس _id)
+            designTypeId = img.designType.id || img.designType._id;
+          } else {
+            // إذا كان string أو number
+            designTypeId = img.designType;
+          }
+
+          // المقارنة كـ strings للتأكد من التطابق
+          return String(designTypeId) === String(id);
         });
 
         const allImagesGrouped = filtered.reduce((acc, img) => {
@@ -117,7 +126,7 @@ export default function DesignTypePage() {
 
                     return (
                       <img
-                        key={img._id}
+                        key={img.id}
                         src={`${import.meta.env.VITE_API_BASE_URL}${
                           img.imageURL
                         }`}
