@@ -107,6 +107,7 @@ export default function About() {
                         className="rounded-xl shadow-xl h-60 w-full object-cover transform rotate-1 absolute top-0 left-0 z-10"
                         data-aos="fade-right"
                         alt="Image 1"
+                        loading="lazy"
                       />
                       <img
                         src={`${import.meta.env.VITE_API_BASE_URL}${
@@ -115,6 +116,7 @@ export default function About() {
                         className="rounded-xl shadow-xl h-64 w-full object-cover relative z-0 mt-12 ml-6"
                         data-aos="fade-left"
                         alt="Image 2"
+                        loading="lazy"
                       />
                     </>
                   ) : (
@@ -125,6 +127,7 @@ export default function About() {
                         }`}
                         alt={sec.title_en}
                         className="rounded-xl object-cover h-80 w-full"
+                        loading="lazy"
                       />
                     </div>
                   )}

@@ -8,7 +8,8 @@ export default function MyUploader({
   imageURL,
   customStyle,
 }) {
-  const [image, setImage] = useState(null); // لتخزين الصورة
+  const [image, setImage] = useState(null);
+  const [previousImageUrl, setPreviousImageUrl] = useState(imageURL || null);
 
   useEffect(() => {
     if (resetPreview) {
@@ -25,8 +26,28 @@ export default function MyUploader({
     },
   });
 
-  const handleRemoveImage = () => {
+  useEffect(() => {
+    // تحديث الصورة السابقة عند تغيير imageURL
+    if (imageURL && imageURL !== previousImageUrl) {
+      setPreviousImageUrl(imageURL);
+    }
+  }, [imageURL]);
+
+  const handleRemoveImage = async () => {
+    if (previousImageUrl) {
+      try {
+        await axios.delete(
+          `${import.meta.env.VITE_API_BASE_URL}/api/upload/delete`,
+          { data: { imageUrl: previousImageUrl } }
+        );
+        console.log("تم حذف الصورة من الخادم");
+      } catch (error) {
+        console.error("خطأ في حذف الصورة:", error);
+      }
+    }
+
     setImage(null);
+    setPreviousImageUrl(null);
     onUpload("");
   };
 
@@ -36,13 +57,24 @@ export default function MyUploader({
     const formData = new FormData();
     formData.append("image", file);
 
+    if (previousImageUrl) {
+      formData.append("oldImageUrl", previousImageUrl);
+    }
+
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/upload`,
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      setImage(`${import.meta.env.VITE_API_BASE_URL}${res.data.url}`);
-      onUpload(res.data.url);
+       const newImageUrl = res.data.url;
+       setImage(`${import.meta.env.VITE_API_BASE_URL}${newImageUrl}`);
+       setPreviousImageUrl(newImageUrl); // تحديث الصورة السابقة
+       onUpload(newImageUrl);
     } catch (err) {
       console.error("فشل رفع الصورة:", err);
     }
@@ -72,6 +104,7 @@ export default function MyUploader({
               }
               alt={`Uploaded preview`}
               className="w-48 h-32 object-cover rounded"
+              loading="lazy"
             />
             <button
               type="button"

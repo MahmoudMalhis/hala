@@ -35,13 +35,13 @@ export default function ContactUs() {
       <img
         src={
           contactInfo?.backgroundImage
-            ? `${import.meta.env.VITE_API_BASE_URL}${
+            && `${import.meta.env.VITE_API_BASE_URL}${
                 contactInfo.backgroundImage
               }`
-            : "2.jpg" // صورة افتراضية في حال لم يرفع
         }
         alt="Background"
         className="absolute inset-0 w-full h-full object-cover z-0"
+        loading="lazy"
       />
       <div className="absolute inset-0 bg-black opacity-40 z-10"></div>
       <div className="relative z-20 max-w-4xl mx-auto px-6 text-center text-white">
@@ -80,6 +80,7 @@ export default function ContactUs() {
                   src={`${import.meta.env.VITE_API_BASE_URL}${link.image}`}
                   alt=""
                   className="w-11 h-11 object-contain"
+                  loading="lazy"
                 />
                 <span className="text-lg font-semibold capitalize">
                   {i18n.language === "ar" ? link.platform.ar : link.platform.en}
@@ -95,7 +96,10 @@ export default function ContactUs() {
         >
           <p className="text-white">{t("orVisitOffice")}</p>
           {contactInfo?.address.map((addr, id) => (
-            <p key={id} className="text-white font-semibold mt-1.5 capitalize mp-3">
+            <p
+              key={id}
+              className="text-white font-semibold mt-1.5 capitalize mp-3"
+            >
               {i18n.language === "ar" ? addr.ar : addr.en}
             </p>
           ))}

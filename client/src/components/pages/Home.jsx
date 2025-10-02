@@ -46,6 +46,7 @@ export default function Home() {
           }`}
           alt="Main Banner"
           className="w-full h-screen object-cover"
+          loading="lazy"
         />
         {isVisible && (
           <div className="absolute inset-0 flex items-center justify-center flex-col">

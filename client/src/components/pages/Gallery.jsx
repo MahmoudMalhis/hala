@@ -101,6 +101,7 @@ export default function Gallery() {
               src={`${import.meta.env.VITE_API_BASE_URL}${img.imageURL}`}
               alt={img.title_en}
               className="w-full h-64 object-cover"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 p-4 text-white flex flex-col justify-end">
               <h2 className="text-xl font-bold">

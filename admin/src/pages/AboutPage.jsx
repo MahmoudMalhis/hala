@@ -255,6 +255,7 @@ export default function AboutPage() {
                   }`}
                   alt=""
                   className="w-full h-40 object-cover rounded mb-3"
+                  loading="lazy"
                 />
               ) : (
                 <div className="w-full h-40 bg-gray-200 rounded mb-3 flex items-center justify-center text-gray-500">

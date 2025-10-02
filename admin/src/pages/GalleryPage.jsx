@@ -398,6 +398,7 @@ export default function GalleryPage() {
                       }`}
                       alt="room"
                       className="h-40 w-full object-cover"
+                      loading="lazy"
                     />
                     <div className="p-3 text-sm flex justify-between items-center">
                       <span>

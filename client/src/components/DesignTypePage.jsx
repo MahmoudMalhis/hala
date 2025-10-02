@@ -127,6 +127,7 @@ export default function DesignTypePage() {
                     return (
                       <img
                         key={img.id}
+                        loading="lazy"
                         src={`${import.meta.env.VITE_API_BASE_URL}${
                           img.imageURL
                         }`}

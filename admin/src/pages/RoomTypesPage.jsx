@@ -189,6 +189,7 @@ export default function RoomTypesPage() {
                 src={`${import.meta.env.VITE_API_BASE_URL}${room.imageURL}`}
                 alt="Room"
                 className="w-full h-40 object-cover rounded mb-3"
+                loading="lazy"
               />
               <h2 className="font-bold text-lg">{room.name_en}</h2>
               <h3 className="text-gray-600">{room.name_ar}</h3>

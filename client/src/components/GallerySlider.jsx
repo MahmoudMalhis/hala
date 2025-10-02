@@ -56,6 +56,7 @@ export default function GallerySlider() {
               src={`${import.meta.env.VITE_API_BASE_URL}${type.imageURL}`}
               alt={i18n.language === "ar" ? type.name_ar : type.name_en}
               className="w-full h-52 object-cover"
+              loading="lazy"
             />
             <div className="p-3">
               <h2 className="text-md font-semibold text-gray-800 capitalize ">

@@ -57,6 +57,7 @@ export default function AlbumCarousel({ images, initialIndex = 0, onClose }) {
                       }`}
                       alt={img.title_ar || img.title_en || ""}
                       className="max-w-full max-h-full object-contain rounded"
+                      loading="lazy"
                     />
                   </div>
                 </SwiperSlide>
@@ -68,6 +69,7 @@ export default function AlbumCarousel({ images, initialIndex = 0, onClose }) {
               {images.map((img, idx) => (
                 <img
                   key={img.id}
+                  loading="lazy"
                   src={`${import.meta.env.VITE_API_BASE_URL}${img.imageURL}`}
                   alt={img.title_ar || img.title_en || ""}
                   className={`w-16 h-12 object-cover rounded cursor-pointer ${

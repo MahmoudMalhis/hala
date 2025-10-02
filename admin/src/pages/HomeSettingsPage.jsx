@@ -168,6 +168,7 @@ export default function HomeSettingsPage() {
               }`}
               alt="صورة الخلفية"
               className="w-full h-48 object-cover mt-2 rounded"
+              loading="lazy"
             />
           )}
           <button

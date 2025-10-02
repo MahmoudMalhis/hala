@@ -73,6 +73,7 @@ export default function RoomCategory() {
                     src={`${import.meta.env.VITE_API_BASE_URL}${cat.imageURL}`}
                     alt={cat.name_en}
                     className="w-full h-full object-cover group-hover:opacity-80"
+                    loading="lazy"
                   />
                 </div>
                 <span className="mt-3 text-lg text-gray-600 group-hover:underline font-alexandria">
