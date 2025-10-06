@@ -23,7 +23,6 @@ export default function Header() {
             src="logo1.png"
             alt="Hala design logo"
             className="md:w-28 w-24 absolute -top-5"
-            loading="lazy"
           />
         </NavLink>
         <Menu

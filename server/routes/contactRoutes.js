@@ -4,11 +4,12 @@ const {
   getContactSettings,
   updateContactSettings,
 } = require("../controllers/contactController");
+const {
+  cacheMiddleware,
+  clearCacheMiddleware,
+} = require("../middleware/cache");
 
-// Get settings
-router.get("/", getContactSettings);
-
-// Update settings
-router.put("/", updateContactSettings);
+router.get("/", cacheMiddleware(3600), getContactSettings);
+router.put("/", clearCacheMiddleware(["/api/contact"]), updateContactSettings);
 
 module.exports = router;

@@ -3,25 +3,35 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import LoadingSpinner from "../LoadingSpinner";
+import ErrorMessage from "../ErrorMessage";
 
 export default function About() {
   const { i18n } = useTranslation();
   const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    AOS.init({ duration: 1000, once: true });
-
-    axios
-      .get(`${import.meta.env.VITE_API_BASE_URL}/api/about-sections`)
-      .then((res) => {
-        // تأكد من الترتيب
+    const fetchSections = async () => {
+      try {
+        AOS.init({ duration: 1000, once: true });
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/about-sections`
+        );
         const sorted = res.data.sort((a, b) => a.order - b.order);
         setSections(sorted);
-      })
-      .catch((err) => console.error(err));
+      } catch (error) {
+        console.error("Error fetching sections:", error);
+        setError("Failed to load");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
   }, []);
 
-  // التحقق من تتابع الأقسام بدون صور
   const groupedSections = [];
   let tempGroup = [];
 
@@ -42,6 +52,14 @@ export default function About() {
       }
       groupedSections.push(sec);
     }
+  }
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
   }
 
   return (

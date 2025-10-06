@@ -29,10 +29,11 @@ export default function AlbumCarousel({ images, initialIndex = 0, onClose }) {
             >
               ×
             </button>
-
-            {/* الـ Swiper الكبير */}
-            {/* الـ Swiper الكبير */}
             <Swiper
+              lazy={{
+                loadPrevNext: true,
+                loadPrevNextAmount: 2,
+              }}
               onSwiper={(s) => {
                 setSwiper(s);
                 s.slideToLoop(initialIndex);

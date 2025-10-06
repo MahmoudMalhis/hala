@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import mockImages from "../../mockImages";
 import GallerySlider from "../GallerySlider";
 import RoomCategory from "../RoomCategory";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
+import { useHomeSettings } from "../../hooks/useHomeSettings";
+import LoadingSpinner from "../LoadingSpinner";
+import ErrorMessage from "../ErrorMessage";
 
 export default function Home() {
-  const [homeSettings, setHomeSettings] = useState();
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const { i18n } = useTranslation();
+
+  const { data: homeSettings, isLoading, error } = useHomeSettings();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -22,19 +24,13 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const fetchHomeSettings = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/home-settings`
-        );
-        setHomeSettings(res.data);
-      } catch (err) {
-        console.log("Failed to fetch", err);
-      }
-    };
-    fetchHomeSettings();
-  }, []);
+  if (isLoading) {
+    return <LoadingSpinner message="جاري تحميل الصفحة الرئيسية..." />;
+  }
+
+  if (error) {
+    return <ErrorMessage message="فشل في تحميل الصفحة الرئيسية" />;
+  }
 
   return (
     <div className="mx-auto">
@@ -46,7 +42,7 @@ export default function Home() {
           }`}
           alt="Main Banner"
           className="w-full h-screen object-cover"
-          loading="lazy"
+          fetchPriority="high"
         />
         {isVisible && (
           <div className="absolute inset-0 flex items-center justify-center flex-col">
@@ -73,7 +69,7 @@ export default function Home() {
       </div>
       <RoomCategory />
       <div className="container py-10 m-auto">
-        <GallerySlider images={mockImages} />
+        <GallerySlider />
       </div>
     </div>
   );

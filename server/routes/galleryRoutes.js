@@ -9,14 +9,21 @@ const {
   createImagesBatch,
   getBatchesByDesignType,
 } = require("../controllers/galleryController");
-const { cacheMiddleware } = require("../middleware/cache");
+const {
+  cacheMiddleware,
+  clearCacheMiddleware,
+} = require("../middleware/cache");
 
-router.post("/", createImage);
-router.post("/batch", createImagesBatch);
-router.get("/batches", getBatchesByDesignType);
-router.get("/", cacheMiddleware(300), getAllImages);
-router.get("/:id", cacheMiddleware(300), getImageById);
-router.put("/:id", updateImage);
-router.delete("/:id", deleteImage);
+router.post("/", clearCacheMiddleware(["/api/gallery"]), createImage);
+router.post(
+  "/batch",
+  clearCacheMiddleware(["/api/gallery"]),
+  createImagesBatch
+);
+router.get("/batches", cacheMiddleware(600), getBatchesByDesignType);
+router.get("/", cacheMiddleware(600), getAllImages);
+router.get("/:id", cacheMiddleware(600), getImageById);
+router.put("/:id", clearCacheMiddleware(["/api/gallery"]), updateImage);
+router.delete("/:id", clearCacheMiddleware(["/api/gallery"]), deleteImage);
 
 module.exports = router;

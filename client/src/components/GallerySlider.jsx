@@ -4,32 +4,43 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useDesignTypes } from "../hooks/useDesignTypes";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 export default function GallerySlider() {
-  const [designTypes, setDesignTypes] = useState([]);
   const { i18n } = useTranslation();
   const navigate = useNavigate();
+
+  const { data: designTypes = [], isLoading, error } = useDesignTypes();
 
   const handleClick = (designTypeId) => {
     navigate(`/designs/${designTypeId}`);
   };
 
-  useEffect(() => {
-    const fetchDesignTypes = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/design-types`
-        );
-        setDesignTypes(response.data);
-      } catch (err) {
-        console.log("Error fetching design types", err);
-      }
-    };
+  if (isLoading) {
+    return (
+      <div className="py-10">
+        <LoadingSpinner message="جاري تحميل أنواع التصاميم..." />
+      </div>
+    );
+  }
 
-    fetchDesignTypes();
-  }, []);
+  if (error) {
+    return (
+      <div className="py-10">
+        <ErrorMessage message="فشل في تحميل أنواع التصاميم" />
+      </div>
+    );
+  }
+
+  if (designTypes.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-gray-500">لا توجد أنواع تصاميم لعرضها</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full mx-auto px-4">

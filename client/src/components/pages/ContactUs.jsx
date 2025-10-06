@@ -1,43 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import axios from "axios";
-
 import { useTranslation } from "react-i18next";
 import SocialLinks from "../SocialLinks";
+import { useContactInfo } from "../../hooks/useContactInfo";
+import LoadingSpinner from "../LoadingSpinner";
+import ErrorMessage from "../ErrorMessage";
 
 export default function ContactUs() {
-  const [contactInfo, setContactInfo] = useState();
   const { t, i18n } = useTranslation();
+
+  // ✅ استخدام React Query
+  const { data: contactInfo, isLoading, error } = useContactInfo();
 
   const sharedClasses =
     "group flex items-center gap-4 font-alexandria bg-white/40 text-gray-900 px-6 py-3 rounded-full shadow-md backdrop-blur-lg transition-all duration-300 hover:scale-105";
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
-
-    const fetchContactInfo = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/contact`
-        );
-        setContactInfo(res.data);
-      } catch (err) {
-        console.log("Failed to fetch", err);
-      }
-    };
-
-    fetchContactInfo();
   }, []);
+
+  // ✅ معالجة Loading
+  if (isLoading) {
+    return <LoadingSpinner message="جاري تحميل معلومات التواصل..." />;
+  }
+
+  // ✅ معالجة Error
+  if (error) {
+    return <ErrorMessage message="فشل في تحميل معلومات التواصل" />;
+  }
 
   return (
     <div className="relative flex items-center pt-44 md:min-h-[calc(100vh-80px)] min-h-[calc(100vh-120px)] text-amber-300 overflow-hidden">
       <img
         src={
-          contactInfo?.backgroundImage
-            && `${import.meta.env.VITE_API_BASE_URL}${
-                contactInfo.backgroundImage
-              }`
+          contactInfo?.backgroundImage &&
+          `${import.meta.env.VITE_API_BASE_URL}${contactInfo.backgroundImage}`
         }
         alt="Background"
         className="absolute inset-0 w-full h-full object-cover z-0"
@@ -66,12 +64,13 @@ export default function ContactUs() {
           sharedClasses={sharedClasses}
         />
         <div className="flex flex-col gap-6 items-center">
-          {contactInfo?.otherLinks.map((link) => {
+          {contactInfo?.otherLinks?.map((link) => {
             return (
               <a
                 key={link.id}
                 href={link.url}
                 target="_blank"
+                rel="noreferrer"
                 className={`${sharedClasses} zoom-in hover:ring-2 mt-6 rounded-full`}
                 data-aos={"zoom-in"}
                 data-aos-delay={400}
@@ -83,7 +82,7 @@ export default function ContactUs() {
                   loading="lazy"
                 />
                 <span className="text-lg font-semibold capitalize">
-                  {i18n.language === "ar" ? link.platform.ar : link.platform.en}
+                  {i18n.language === "ar" ? link.platform?.ar : link.platform?.en}
                 </span>
               </a>
             );
@@ -95,7 +94,7 @@ export default function ContactUs() {
           className="mt-16 text-white"
         >
           <p className="text-white">{t("orVisitOffice")}</p>
-          {contactInfo?.address.map((addr, id) => (
+          {contactInfo?.address?.map((addr, id) => (
             <p
               key={id}
               className="text-white font-semibold mt-1.5 capitalize mp-3"

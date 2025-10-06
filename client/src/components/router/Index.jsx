@@ -7,6 +7,7 @@ const Gallery = lazy(() => import("../pages/Gallery"));
 const ContactUs = lazy(() => import("../pages/ContactUs"));
 const DesignTypePage = lazy(() => import("../DesignTypePage"));
 import ScrollToTop from "../ScrollToTop";
+import NotFound from "../pages/NotFound";
 
 const PageLoader = () => (
   <div className="flex items-center justify-center h-screen">
@@ -17,8 +18,8 @@ const PageLoader = () => (
 export default function Index() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
-        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -27,6 +28,7 @@ export default function Index() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/designs-type" element={<DesignTypePage />} />
             <Route path="/designs/:id" element={<DesignTypePage />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Suspense>

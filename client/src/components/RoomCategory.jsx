@@ -1,51 +1,37 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
+import { useRoomTypes } from "../hooks/useRoomTypes";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
 
 export default function RoomCategory() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/room-types`
-        );
-        setCategories(response.data);
-      } catch (err) {
-        console.error("Error fetching categories:", err);
-        setError("Failed to load categories");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+  // ✅ استخدام React Query
+  const { data: categories = [], isLoading, error } = useRoomTypes();
 
   const handleClick = (type) => {
     navigate(`/gallery?category=${type}`);
   };
-  if (loading) {
+
+  // ✅ معالجة Loading
+  if (isLoading) {
     return (
       <section className="py-16 bg-gradient-to-b from-[#fffdf9] via-[#faf5f0] to-[#f3ece6]">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p>Loading categories...</p>
+        <div className="max-w-6xl mx-auto px-6">
+          <LoadingSpinner message="جاري تحميل الفئات..." />
         </div>
       </section>
     );
   }
 
+  // ✅ معالجة Error
   if (error) {
     return (
       <section className="py-16 bg-gradient-to-b from-[#fffdf9] via-[#faf5f0] to-[#f3ece6]">
-        <div className="max-w-6xl mx-auto px-6 text-center text-red-500">
-          <p>{error}</p>
+        <div className="max-w-6xl mx-auto px-6">
+          <ErrorMessage message="فشل في تحميل فئات الغرف" />
         </div>
       </section>
     );
@@ -59,7 +45,7 @@ export default function RoomCategory() {
         </h2>
 
         {categories.length === 0 ? (
-          <p className="text-center">No categories found</p>
+          <p className="text-center text-gray-500">لا توجد فئات لعرضها</p>
         ) : (
           <div className="flex flex-wrap justify-center items-center gap-8 justify-items-center">
             {categories.map((cat) => (

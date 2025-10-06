@@ -2,12 +2,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const compression = require("compression");
-const {
-  cacheMiddleware,
-  clearCacheMiddleware,
-  clearCache,
-  getCacheStats,
-} = require("./middleware/cache");
 const { connectDB } = require("./config/db");
 const roomTypeRoutes = require("./routes/roomTypeRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
@@ -68,7 +62,7 @@ dotenv.config();
   });
 
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, "192.168.1.11", () => {
+  app.listen(PORT, "192.168.1.8", () => {
     console.log(`🚀 Server is running on port ${PORT}`);
   });
 })();

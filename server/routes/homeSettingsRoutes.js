@@ -5,9 +5,21 @@ const {
   updateHomeSettings,
   createHomeSettings,
 } = require("../controllers/homeSettingsController");
+const {
+  clearCacheMiddleware,
+  cacheMiddleware,
+} = require("../middleware/cache");
 
-router.get("/", getHomeSettings);
-router.post("/", createHomeSettings); // ✅ أضف هذا السطر
-router.put("/:id", updateHomeSettings); // تعديل الإعدادات
+router.get("/", cacheMiddleware(1800), getHomeSettings);
+router.post(
+  "/",
+  clearCacheMiddleware(["/api/home-settings"]),
+  createHomeSettings
+);
+router.put(
+  "/:id",
+  clearCacheMiddleware(["/api/home-settings"]),
+  updateHomeSettings
+);
 
 module.exports = router;
